@@ -1,6 +1,7 @@
 <?php
 	session_start();
 	include("./settings/connect_datebase.php");
+	include("check_auth.php");
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -108,5 +109,33 @@
 					}
 				});
 		}
+		function Logout() {
+				$.ajax({
+					url: 'ajax/logout.php',
+					type: 'POST',
+					cache: false,
+					dataType: 'html',
+					processData: false,
+					contentType: false,
+					success: function (response) {
+						try {
+							var data = JSON.parse(response);
+							if (data.status === "success") {
+								alert(data.message);
+								window.location.href = "login.php";
+							} else {
+								alert(data.message);
+							}
+						} catch (e) {
+							console.error("Ошибка при обработке ответа сервера:", e);
+							alert("Произошла ошибка. Пожалуйста, попробуйте позже.");
+						}
+					},
+					error: function () {
+						console.log('Системная ошибка!');
+						alert("Не удалось выполнить запрос к серверу.");
+					}
+				});
+			}
 	</script>
 </html>

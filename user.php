@@ -1,19 +1,15 @@
 <?php
 	session_start();
+	include("check_auth.php");
 	include("./settings/connect_datebase.php");
 	
-	if (isset($_SESSION['user'])) {
-		if($_SESSION['user'] == -1) {
-			header("Location: login.php");
-		} else {
-			// проверяем пользователя, если админ выкидываем на админа
-			$user_to_query = $mysqli->query("SELECT `roll` FROM `users` WHERE `id` = ".$_SESSION['user']);
-			$user_to_read = $user_to_query->fetch_row();
-			
-			if($user_to_read[0] == 1) header("Location: login.php");
-		}
- 	} else header("Location: login.php");
-	
+	$user_query = $mysqli->query("SELECT * FROM `users` WHERE `id` = " . $_SESSION['user']);
+if (!$user_query || !$user_query->num_rows) {
+    session_destroy();
+    header("Location: login.php");
+    exit;
+}
+$user_data = $user_query->fetch_assoc();
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -43,17 +39,9 @@
 				<input type="button" class="button" value="Выйти" onclick="logout()"/>
 				<div class="name" style="padding-bottom: 0px;">Личный кабинет</div>
 				<div class="description">Добро пожаловать: 
-					<?php
-						$user_to_query = $mysqli->query("SELECT * FROM `users` WHERE `id` = ".$_SESSION['user']);
-						$user_to_read = $user_to_query->fetch_row();
-						
-						echo $user_to_read[1];
-					?>
-					<br>Ваш идентификатор:
-					<?php
-						echo $user_to_read[0];
-					?>
-				</div>
+				Добро пожаловать: <?php echo htmlspecialchars($user_data['login']); ?><br>
+            	Ваш идентификатор: <?php echo htmlspecialchars($user_data['id']); ?>
+       			 </div>
 			
 				<div class="footer">
 					© КГАПОУ "Авиатехникум", 2020
@@ -64,52 +52,28 @@
 		</div>
 		
 		<script>
-			var id_statement = -1;
-			function DeleteStatementt(id_statement) {
-				if(id_statement != -1) {
-					
-					var data = new FormData();
-					data.append("id_statement", id_statement);
-					
-					// AJAX запрос
-					$.ajax({
-						url         : 'ajax/delete_statement.php',
-						type        : 'POST', // важно!
-						data        : data,
-						cache       : false,
-						dataType    : 'html',
-						// отключаем обработку передаваемых данных, пусть передаются как есть
-						processData : false,
-						// отключаем установку заголовка типа запроса. Так jQuery скажет серверу что это строковой запрос
-						contentType : false, 
-						// функция успешного ответа сервера
-						success: function (_data) {
-							console.log(_data);
-							location.reload();
-						},
-						// функция ошибки
-						error: function(){
-							console.log('Системная ошибка!');
-						}
-					});
-				}
-			}
-			
+		
 			function logout() {
 				$.ajax({
 					url         : 'ajax/logout.php',
 					type        : 'POST', // важно!
 					data        : null,
 					cache       : false,
-					dataType    : 'html',
+					dataType    : 'json',
 					processData : false,
 					contentType : false, 
-					success: function (_data) {
-						location.reload();
-					},
-					error: function( ){
-						console.log('Системная ошибка!');
+					success: function (response) {
+					if (response.status === "success") {
+						alert(response.message);
+						window.location.href = "login.php";
+					} else {
+						alert(response.message);
 					}
+				},
+				error: function () {
+					console.log('Системная ошибка!');
+					alert("Не удалось выполнить запрос к серверу.");
+				}
 				});
 			}
 		</script>

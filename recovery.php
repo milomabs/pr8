@@ -86,48 +86,46 @@
 				errorWindow.style.display = "block";
 			}
 			
-			function LogIn() {
-				var _login = document.getElementsByName("_login")[0].value;
-				loading.style.display = "block";
-				button.className = "button_diactive";
-				
-				var data = new FormData();
-				data.append("login", _login);
-				
-				// AJAX запрос
-				$.ajax({
-					url         : 'ajax/recovery.php',
-					type        : 'POST', // важно!
-					data        : data,
-					cache       : false,
-					dataType    : 'html',
-					// отключаем обработку передаваемых данных, пусть передаются как есть
-					processData : false,
-					// отключаем установку заголовка типа запроса. Так jQuery скажет серверу что это строковой запрос
-					contentType : false, 
-					// функция успешного ответа сервера
-					success: function (_data) {
-						
-						if(_data == -1) {
-							EnableError();
-							loading.style.display = "none";
-							button.className = "button";
-						} else {
-							console.log("Пароль изменён, ID абитуриента: " +_data);
-							document.getElementsByClassName('success')[0].style.display = "block";
-							document.getElementsByClassName('description')[0].innerHTML = "На указанный вами адрес <b>"+_login+"</b> будет отправлено письмо с новым паролем.";
-							
-							document.getElementsByClassName('login')[0].style.display = "none";
-						}
-					},
-					// функция ошибки
-					error: function( ){
-						console.log('Системная ошибка!');
-						loading.style.display = "none";
-						button.className = "button";
-					}
-				});
+			function RecoverPassword() {
+			var _login = document.getElementsByName("_login")[0].value.trim();
+			if (!_login) {
+				EnableError("Введите адрес электронной почты.");
+				return;
 			}
+
+			loading.style.display = "block";
+			button.className = "button_diactive";
+
+			var data = new FormData();
+			data.append("login", _login);
+				
+			$.ajax({
+            url: 'ajax/recovery.php',
+            type: 'POST',
+            data: data,
+            cache: false,
+            dataType: 'json',
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                if (response.status === "success") {
+                    document.getElementsByClassName('success')[0].style.display = "block";
+                    document.getElementsByClassName('description')[0].innerHTML = "На указанный вами адрес <b>" + _login + "</b> будет отправлено письмо с новым паролем.";
+                    document.getElementsByClassName('login')[0].style.display = "none";
+                } else {
+                    EnableError(response.message);
+                }
+            },
+            error: function () {
+                console.log('Системная ошибка!');
+                EnableError("Не удалось выполнить запрос к серверу.");
+            },
+            complete: function () {
+                loading.style.display = "none";
+                button.className = "button";
+            }
+        });
+    }
 		</script>
 	</body>
 </html>

@@ -13,6 +13,7 @@
 		header("Location: login.php");
 		echo "Пользователя не существует";
 	}
+	include("check_auth.php");
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -35,8 +36,7 @@
 			</div>
 		</div>
 		<div class="space"> </div>
-		<div class="main
-		">
+		<div class="main">
 			<div class="content">
 				<input type="button" class="button" value="Выйти" onclick="logout()"/>
 				
@@ -53,23 +53,35 @@
 		</div>
 		
 		<script>
-			function logout() {
+			function Logout() {
 				$.ajax({
-					url         : 'ajax/logout.php',
-					type        : 'POST', // важно!
-					data        : null,
-					cache       : false,
-					dataType    : 'html',
-					processData : false,
-					contentType : false, 
-					success: function (_data) {
-						location.reload();
+					url: 'ajax/logout.php',
+					type: 'POST',
+					cache: false,
+					dataType: 'html',
+					processData: false,
+					contentType: false,
+					success: function (response) {
+						try {
+							var data = JSON.parse(response);
+							if (data.status === "success") {
+								alert(data.message);
+								window.location.href = "login.php";
+							} else {
+								alert(data.message);
+							}
+						} catch (e) {
+							console.error("Ошибка при обработке ответа сервера:", e);
+							alert("Произошла ошибка. Пожалуйста, попробуйте позже.");
+						}
 					},
-					error: function( ){
+					error: function () {
 						console.log('Системная ошибка!');
+						alert("Не удалось выполнить запрос к серверу.");
 					}
 				});
 			}
+
 		</script>
 	</body>
 </html>
