@@ -128,13 +128,13 @@ function sendVerificationCode($email, $code, $idsss) {
         $mail->isSMTP();
         $mail->Host = 'smtp.yandex.ru';
         $mail->SMTPAuth = true;
-        $mail->Username = 'shilova.1138@yandex.ru';
-        $mail->Password = 'cldchunnvgezyjbj';
+        $mail->Username = 'milomabs@yandex.ru';
+        $mail->Password = '4cfeeb97fec7545f1e8dfe62567a7bea';
         $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port = 465;
         $mail->CharSet = 'UTF-8';
 
-        $mail->setFrom('shilova.1138@yandex.ru', 'Шилова Валерия Дмитриевна');
+        $mail->setFrom('milomabs@yandex.ru', 'Титов Дмитрий Антоннович');
         $mail->addAddress($email);
         $mail->isHTML(true);
         $mail->Subject = 'Подтверждение входа';

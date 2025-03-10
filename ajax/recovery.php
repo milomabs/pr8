@@ -27,7 +27,7 @@ if ($user = $query_user->fetch_assoc()) {
         $mail->Host = 'smtp.yandex.ru';
         $mail->SMTPAuth = true;
         $mail->Username = 'milomabs@yandex.ru'; 
-        $mail->Password = 'cldchunnvgezyjbj'; 
+        $mail->Password = '4cfeeb97fec7545f1e8dfe62567a7bea'; 
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port = 465;
 
