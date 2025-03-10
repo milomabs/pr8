@@ -67,7 +67,7 @@ try {
     $mail->Host = 'smtp.yandex.ru';
     $mail->SMTPAuth = true;
     $mail->Username = 'milomabs@yandex.ru';
-    $mail->Password = '4cfeeb97fec7545f1e8dfe62567a7bea';
+    $mail->Password = 'lhhewprxnpiipffw';
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
     $mail->Port = 465;
     $mail->CharSet = 'UTF-8';

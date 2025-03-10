@@ -49,7 +49,7 @@ if (isset($_SESSION['user']) && isset($_SESSION['token'])) {
             <div class="sub-name">Логин:</div>
             <input name="_login" type="text" placeholder="Введите логин" required onkeypress="return PressToEnter(event)"/>
             <div class="sub-name">Пароль:</div>
-            <input name="_password" type="password" placeholder="Введите пароль" required onkeypress="return PressToEnter(event)"/>
+            <input name="_password" type="text" placeholder="Введите пароль" required onkeypress="return PressToEnter(event)"/>
             <a href="regin.php">Регистрация</a>
             <br><a href="recovery.php">Забыли пароль?</a>
             <input type="button" class="button" value="Войти" onclick="LogIn()"/>

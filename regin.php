@@ -48,10 +48,10 @@ if (isset($_SESSION['user']) && $_SESSION['user'] != -1) {
                 <input name="_email" type="email" placeholder="Введите email" required/>
 
                 <div class="sub-name">Пароль:</div>
-                <input name="_password" type="password" placeholder="Введите пароль" required/>
+                <input name="_password" type="text" placeholder="Введите пароль" required/>
 
                 <div class="sub-name">Повторите пароль:</div>
-                <input name="_passwordCopy" type="password" placeholder="Повторите пароль" required/>
+                <input name="_passwordCopy" type="text" placeholder="Повторите пароль" required/>
 
                 <a href="login.php">Вернуться</a>
                 <input type="button" class="button" value="Зарегистрироваться" onclick="RegIn()" style="margin-top: 0px;"/>
