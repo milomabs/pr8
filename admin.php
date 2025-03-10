@@ -35,7 +35,8 @@
 			</div>
 		</div>
 		<div class="space"> </div>
-		<div class="main">
+		<div class="main
+		">
 			<div class="content">
 				<input type="button" class="button" value="Выйти" onclick="logout()"/>
 				
